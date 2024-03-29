@@ -32,4 +32,8 @@ public class SCPentity {
         this.description = description;
     }
 
+    // No-args constructor
+    public SCPentity() {
+    }
+
 }

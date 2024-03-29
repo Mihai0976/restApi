@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
-//import com.example.demo.model.SCPentity;
-//import com.example.demo.repository.SCPentityRepository;
-//import org.jetbrains.annotations.NotNull;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
+import com.example.demo.model.SCPentity;
+import com.example.demo.repository.SCPentityRepository;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 //
 //import java.util.UUID;
 
@@ -26,3 +28,15 @@ package com.example.demo.service;
 //    }
 //
 //}
+@Service
+public class SCPservice {
+
+    @Autowired
+    private SCPentityRepository repository;
+
+    public List<SCPentity> getAllAnomalies() {
+        return repository.findAll();
+    }
+
+
+}
