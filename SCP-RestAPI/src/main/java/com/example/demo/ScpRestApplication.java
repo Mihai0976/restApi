@@ -1,19 +1,15 @@
 package com.example.demo;
 
-import com.example.demo.model.SCPentity;
-import com.example.demo.repository.SCPentityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+
 
 @SpringBootApplication
 public class ScpRestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ScpRestApplication.class, args);
 	}
-	@Autowired SCPentityRepository repository;
+	/*@Autowired SCPentityRepository repository;
 
 	@Bean
 	CommandLineRunner runner(SCPentityRepository repository) {
@@ -27,7 +23,7 @@ public class ScpRestApplication {
 			);
 			repository.insert(scpEntity);
 		};
-	}
+	}*/
 
 }
 
