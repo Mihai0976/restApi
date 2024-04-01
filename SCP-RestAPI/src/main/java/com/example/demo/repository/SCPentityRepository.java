@@ -2,11 +2,10 @@ package com.example.demo.repository;
 
 
 import com.example.demo.model.SCPentity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.util.List;
-
-
 public interface SCPentityRepository extends MongoRepository<SCPentity, String> {
-    List<SCPentity> findByObjectClass(String objectClass);
+    Page<SCPentity> findByObjectClass(String objectClass, Pageable pageable);
 }

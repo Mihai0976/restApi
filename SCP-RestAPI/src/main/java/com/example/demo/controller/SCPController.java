@@ -4,11 +4,15 @@ package com.example.demo.controller;
 import com.example.demo.model.SCPentity;
 import com.example.demo.service.SCPservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 //if you access http://localhost:8080/swagger-ui/index.html#/scp-controller you get the swagger gui
@@ -16,7 +20,8 @@ import java.util.List;
 @RequestMapping("/api")
 public class SCPController {
 
-    @GetMapping(path = "/hello") //Surfar man in på http://localhost:8080/hello kommer "SCP Anomaly database" displayas i browsern
+    @GetMapping(path = "/hello")
+    //Surfar man in på http://localhost:8080/hello kommer "SCP Anomaly database" displayas i browsern
     public String helloSCP() {
         return "hello";
     }
@@ -26,29 +31,46 @@ public class SCPController {
 
     //  // Endpoint to retrieve all anomalies
     @GetMapping("/anomalies")
-    public ResponseEntity<List<SCPentity>> getAllAnomalies() {
-        List<SCPentity> anomalies = anomalyService.getAllAnomalies();
-        return ResponseEntity.ok(anomalies);
+    public ResponseEntity<EntityModel<Page<SCPentity>>> getAllAnomalies(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SCPentity> anomalies = anomalyService.getAllAnomalies(pageable);
+
+        EntityModel<Page<SCPentity>> model = EntityModel.of(anomalies);
+        if (!anomalies.isEmpty()) {
+            int prevPage = anomalies.hasPrevious() ? anomalies.getNumber() - 1 : 0;
+            int nextPage = anomalies.hasNext() ? anomalies.getNumber() + 1 : anomalies.getNumber();
+
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SCPController.class)
+                            .getAllAnomalies(prevPage, size))
+                    .withRel("prev"));
+
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SCPController.class)
+                            .getAllAnomalies(nextPage, size))
+                    .withRel("next"));
+        }
+
+        return ResponseEntity.ok(model);
     }
 
     // Endpoint to retrieve a specific anomaly by ID
     @GetMapping("/anomalies/{id}")
-    public ResponseEntity<SCPentity>getAnomalieById(@PathVariable String id){
-        return  anomalyService.getAnomalyById(id)
+    public ResponseEntity<SCPentity> getAnomalieById(@PathVariable String id) {
+        return anomalyService.getAnomalyById(id)
                 .map(anomaly -> ResponseEntity.ok().body(anomaly))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // Endpoint to add a new anomaly
     @PostMapping("/anomalies")
-    public ResponseEntity<SCPentity>addAnomaliee(@RequestBody SCPentity anomaly){
+    public ResponseEntity<SCPentity> addAnomaliee(@RequestBody SCPentity anomaly) {
         SCPentity savedAnomaly = anomalyService.addAnomaly(anomaly);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAnomaly);
     }
 
     // Endpoint to update anomaly's description by adding new observations
     @PutMapping("/anomalies/{anomalyId}/observations")
-    public ResponseEntity<SCPentity>updateAnomalieDescription(@PathVariable String anomalyId, @RequestBody String observations){
+    public ResponseEntity<SCPentity> updateAnomalieDescription(@PathVariable String anomalyId, @RequestBody String observations) {
         SCPentity updatedScpentity = anomalyService.addObservations(anomalyId, observations);
         return ResponseEntity.status(HttpStatus.OK).body(updatedScpentity);
     }
@@ -65,9 +87,27 @@ public class SCPController {
     }
 
     @GetMapping("/anomalies/object-class/{objectClass}")
-    public ResponseEntity<List<SCPentity>> getAnomaliesByObjectClass(@PathVariable String objectClass) {
-        List<SCPentity> anomalies = anomalyService.getAnomaliesByObjectClass(objectClass);
-        return ResponseEntity.ok(anomalies);
+    public ResponseEntity<EntityModel<Page<SCPentity>>> getAnomaliesByObjectClass(@PathVariable String objectClass,
+                                                                                  @RequestParam(defaultValue = "0") int page,
+                                                                                  @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<SCPentity> anomalies = anomalyService.getAnomaliesByObjectClass(objectClass, pageable);
+
+        EntityModel<Page<SCPentity>> model = EntityModel.of(anomalies);
+        if (!anomalies.isEmpty()) {
+            int prevPage = anomalies.hasPrevious() ? anomalies.getNumber() - 1 : 0;
+            int nextPage = anomalies.hasNext() ? anomalies.getNumber() + 1 : anomalies.getNumber();
+
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SCPController.class)
+                            .getAnomaliesByObjectClass(objectClass, prevPage, size))
+                    .withRel("prev"));
+
+            model.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(SCPController.class)
+                            .getAnomaliesByObjectClass(objectClass, nextPage, size))
+                    .withRel("next"));
+        }
+
+        return ResponseEntity.ok(model);
     }
 
 }

@@ -3,9 +3,9 @@ package com.example.demo.service;
 import com.example.demo.model.SCPentity;
 import com.example.demo.repository.SCPentityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 //
 //import java.util.UUID;
@@ -35,8 +35,8 @@ public class SCPservice {
     private SCPentityRepository repository;
 
     // Retrieve all anomalies from the database
-    public List<SCPentity> getAllAnomalies() {
-        return repository.findAll();
+    public Page<SCPentity> getAllAnomalies(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     // Retrieve a specific anomaly by its ID
@@ -66,8 +66,8 @@ public class SCPservice {
             return false; // Anomaly with the specified ID not found
         }
     }
-    public List<SCPentity> getAnomaliesByObjectClass(String objectClass) {
-        return repository.findByObjectClass(objectClass);
+    public Page<SCPentity> getAnomaliesByObjectClass(String objectClass, Pageable pageable) {
+        return repository.findByObjectClass(objectClass, pageable);
     }
 
 }
