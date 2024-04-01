@@ -66,4 +66,8 @@ public class SCPservice {
             return false; // Anomaly with the specified ID not found
         }
     }
+    public List<SCPentity> getAnomaliesByObjectClass(String objectClass) {
+        return repository.findByObjectClass(objectClass);
+    }
+
 }

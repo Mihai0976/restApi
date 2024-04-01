@@ -64,4 +64,10 @@ public class SCPController {
         }
     }
 
+    @GetMapping("/anomalies/object-class/{objectClass}")
+    public ResponseEntity<List<SCPentity>> getAnomaliesByObjectClass(@PathVariable String objectClass) {
+        List<SCPentity> anomalies = anomalyService.getAnomaliesByObjectClass(objectClass);
+        return ResponseEntity.ok(anomalies);
+    }
+
 }
