@@ -6,14 +6,16 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Document(collection = "users")
-public class Users implements UserDetails, CredentialsContainer {
+public class Users implements UserDetails {
     public enum UserRole {
         PLEB, //Kanske bara har read tillgång till anomalier?
         ADMIN, //Har tillgång till allt?
@@ -48,7 +50,7 @@ public class Users implements UserDetails, CredentialsContainer {
 
 
     public Users(String username, String password, String role, boolean isAccountNonExpired, boolean isAccountNonLocked, boolean isCredentialsNonExpired, boolean isEnabled) {
-        this.password = password;
+        this.username = username;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
@@ -65,31 +67,30 @@ public class Users implements UserDetails, CredentialsContainer {
     //metoder som måste implementeras pga UserDetails och CredentialsContainer gränssnitten
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
-
+    // Method to set authorities based on user's role
+    public void setAuthorities(UserRole role) {
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
+    }
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
-    @Override
-    public void eraseCredentials() {
-
-    }
 }
