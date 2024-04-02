@@ -4,6 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.model.SCPentity;
 import com.example.demo.service.SCPservice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,16 +21,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class SCPController {
 
-    @GetMapping(path = "/hello")
-    //Surfar man in på http://localhost:8080/hello kommer "SCP Anomaly database" displayas i browsern
-    public String helloSCP() {
-        return "hello";
-    }
-
     @Autowired
     private SCPservice anomalyService;
 
-    //  // Endpoint to retrieve all anomalies
+    // Endpoint to retrieve all anomalies
     @GetMapping("/anomalies")
     public ResponseEntity<EntityModel<Page<SCPentity>>> getAllAnomalies(@RequestParam(defaultValue = "0") int page,
                                                                         @RequestParam(defaultValue = "10") int size) {
@@ -109,5 +104,4 @@ public class SCPController {
 
         return ResponseEntity.ok(model);
     }
-
 }
