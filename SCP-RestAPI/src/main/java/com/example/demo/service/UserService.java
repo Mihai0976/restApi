@@ -11,7 +11,10 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    //Add new user
-    public Users addUser(Users user) {return  repository.save(user);}
+    //Lets a user register an account (automatically gets the role PLEB by registering via this endpoint)
+    public Users addUser(Users user) {
+        user.setRole(Users.UserRole.PLEB);
+        return  repository.save(user);
+    }
 
 }
