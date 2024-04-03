@@ -1,6 +1,4 @@
 package com.example.demo.controller;
-
-
 import com.example.demo.model.SCPentity;
 import com.example.demo.service.SCPservice;
 import org.springframework.beans.factory.annotation.Autowired;
