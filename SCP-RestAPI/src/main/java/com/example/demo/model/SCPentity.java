@@ -9,16 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "entities")
 @AllArgsConstructor
 public class SCPentity {
-    public enum ObjectClass {
-        EUCLID,
-        SAFE,
-        KETER,
-        THAUMIEL,
-        NEUTRALIZED,
-        DECOMMISSIONED,
-        APOLLYON,
-        ARCHON
-    }
     @Id
     private String id;
     @Getter
@@ -29,7 +19,7 @@ public class SCPentity {
     private String name;
     @Getter
     @Setter
-    private ObjectClass objectClass;
+    private String objectClass;
     @Setter
     @Getter
     private String description;
@@ -38,7 +28,7 @@ public class SCPentity {
     public SCPentity(String item, String name, String objectClass, String description) {
         this.item = item;
         this.name = name;
-        this.objectClass = ObjectClass.valueOf(objectClass);
+        this.objectClass = objectClass;
         this.description = description;
     }
 
