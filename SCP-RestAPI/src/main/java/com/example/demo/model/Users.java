@@ -17,12 +17,6 @@ import java.util.Set;
 
 @Document(collection = "users")
 public class Users implements UserDetails {
-    public enum UserRole {
-        PLEB, //Kanske bara har read tillgång till anomalier?
-        ADMIN, //Har tillgång till allt?
-        SCIENTIST //Kan redigera anomalier men inte users
-    }
-
     @Id
     private String id;
     @Getter
@@ -32,7 +26,7 @@ public class Users implements UserDetails {
     private String password;
     @Getter
     @Setter
-    private UserRole role;
+    private String role;
     @Getter
     @Setter
     private Set<GrantedAuthority> authorities;
@@ -57,7 +51,7 @@ public class Users implements UserDetails {
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
         setPassword(password);
-        this.role = UserRole.valueOf(role);
+        this.role = role;
     }
 
     //Metod för att hasha lösen med BCryptPasswordEncoder
@@ -68,7 +62,7 @@ public class Users implements UserDetails {
     //metoder som måste implementeras pga UserDetails och CredentialsContainer gränssnitten
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
     @Override
@@ -86,9 +80,6 @@ public class Users implements UserDetails {
         return true;
     }
     // Method to set authorities based on user's role
-    public void setAuthorities(UserRole role) {
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));
-    }
     @Override
     public boolean isEnabled() {
         return true;
