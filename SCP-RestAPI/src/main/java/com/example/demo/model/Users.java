@@ -1,11 +1,11 @@
 package com.example.demo.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +21,15 @@ public class Users implements UserDetails {
     private String id;
     @Getter
     @Setter
+    @NotBlank
+    @Size(min = 5, max = 20)
     private String username;
     @Getter
+    @Size(min = 5)
     private String password;
     @Getter
     @Setter
     private String role;
-    @Getter
     @Setter
     private Set<GrantedAuthority> authorities;
     @Getter
@@ -53,7 +55,6 @@ public class Users implements UserDetails {
         setPassword(password);
         this.role = role;
     }
-
     //Metod för att hasha lösen med BCryptPasswordEncoder
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
@@ -85,4 +86,7 @@ public class Users implements UserDetails {
         return true;
     }
 
+    public String getRoles() {
+        return role;
+    }
 }
