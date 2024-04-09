@@ -38,7 +38,7 @@ public class Users implements UserDetails {
     @Getter
     @Setter
     private final boolean isAccountNonLocked;
-    @Getter
+        @Getter
     @Setter
     private final boolean isCredentialsNonExpired;
     @Getter
@@ -52,12 +52,8 @@ public class Users implements UserDetails {
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
         this.isEnabled = isEnabled;
-        setPassword(password);
+        this.password = password;
         this.role = role;
-    }
-    //Metod för att hasha lösen med BCryptPasswordEncoder
-    public void setPassword(String password) {
-        this.password = new BCryptPasswordEncoder().encode(password);
     }
 
     //metoder som måste implementeras pga UserDetails och CredentialsContainer gränssnitten
