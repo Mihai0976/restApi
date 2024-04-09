@@ -16,7 +16,7 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-    public static String SECRET = "1234567890";
+    public static String SECRET = "HippetyHoppetyIAmcomingforyourproperty123456789";
 
     //Metod som genererar token för specifik username
     public String generateToken(String userName) {
