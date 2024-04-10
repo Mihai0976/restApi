@@ -32,7 +32,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable) //All
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/anomalies/**", "/swagger-ui/**").permitAll() // Allow all methods under /api/anomalies/ and /swagger-ui/
+                        .anyRequest().authenticated())
                 .build();
     }
     @Bean
