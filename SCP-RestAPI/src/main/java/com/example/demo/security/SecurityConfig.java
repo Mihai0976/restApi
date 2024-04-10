@@ -1,5 +1,6 @@
 package com.example.demo.security;
 
+import com.example.demo.filter.AuthTokenFilter;
 import com.example.demo.service.UserDetailServiceImpl;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,14 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
 public class SecurityConfig {
-
+    @Autowired
+    AuthTokenFilter authTokenFilter;
     @Autowired
     UserService userService;
     @Bean
@@ -31,8 +34,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable) //All
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/anomalies/**", "/swagger-ui/**").permitAll() // Allow all methods under /api/anomalies/ and /swagger-ui/
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/anomalies/**", "/swagger-ui/**","/api/register","/api/generateToken").permitAll() // Allow all methods under /api/anomalies/ and /swagger-ui/
                         .anyRequest().authenticated())
                 .build();
     }

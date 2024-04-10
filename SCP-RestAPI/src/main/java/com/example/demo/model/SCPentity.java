@@ -23,6 +23,7 @@ public class SCPentity {
     @Setter
     @Getter
     private String description;
+    private Observations observations;
 
     // Constructor with parameters
     public SCPentity(String item, String name, String objectClass, String description) {

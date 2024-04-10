@@ -20,6 +20,9 @@ public class UserService {
         user.setRole("PLEB");
         return  repository.save(user);
     }
+    public Users adminAddUser(Users user) {
+        return repository.save(user);
+    }
     // Method to retrieve paginated users
     public Page<Users> getAllUsers(Pageable pageable) {return repository.findAll(pageable);}
 
