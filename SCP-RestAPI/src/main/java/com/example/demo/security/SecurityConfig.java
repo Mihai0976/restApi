@@ -36,7 +36,7 @@ public class SecurityConfig {
         return http
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/anomalies/**", "/swagger-ui/**","/v3/api-docs/**").permitAll() // Allow all methods under /api/anomalies/ and /swagger-ui/
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/anomalies/**", "/swagger-ui/**","/v3/api-docs/**","/api/register","api/generateToken","/api/addObservation","/api/observations").permitAll() // Allow all methods under /api/anomalies/ and /swagger-ui/
                         .anyRequest().authenticated())
                 .build();
     }

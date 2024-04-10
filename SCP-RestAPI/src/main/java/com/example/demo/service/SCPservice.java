@@ -30,10 +30,10 @@ public class SCPservice {
     }
 
     // Add observations to an existing anomaly's description
-    public SCPentity addObservations(String anomalyId, String observations) {
+    public SCPentity addDescription(String anomalyId, String description) {
         SCPentity anomaly = repository.findById(anomalyId)
                 .orElseThrow(() -> new RuntimeException("Anomaly not found with id: " + anomalyId));
-        anomaly.setDescription(anomaly.getDescription() + "\n" + observations);
+        anomaly.setDescription(anomaly.getDescription() + "\n" + description);
         return repository.save(anomaly);
     }
 

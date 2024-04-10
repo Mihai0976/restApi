@@ -2,7 +2,6 @@ package com.example.demo.controller;
 import com.example.demo.model.SCPentity;
 import com.example.demo.service.SCPservice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +63,7 @@ public class SCPController {
     // Endpoint to update anomaly's description by adding new observations
     @PutMapping("/anomalies/{anomalyId}/observations")
     public ResponseEntity<SCPentity> updateAnomalieDescription(@PathVariable String anomalyId, @RequestBody String observations) {
-        SCPentity updatedScpentity = anomalyService.addObservations(anomalyId, observations);
+        SCPentity updatedScpentity = anomalyService.addDescription(anomalyId, observations);
         return ResponseEntity.status(HttpStatus.OK).body(updatedScpentity);
     }
 

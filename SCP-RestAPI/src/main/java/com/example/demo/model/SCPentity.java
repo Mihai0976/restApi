@@ -6,6 +6,8 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "entities")
 @AllArgsConstructor
 public class SCPentity {
@@ -23,14 +25,17 @@ public class SCPentity {
     @Setter
     @Getter
     private String description;
-    private Observations observations;
+    @Getter
+    @Setter
+    private List<Observations> observations;
 
     // Constructor with parameters
-    public SCPentity(String item, String name, String objectClass, String description) {
+    public SCPentity(String item, String name, String objectClass, String description, Observations observations) {
         this.item = item;
         this.name = name;
         this.objectClass = objectClass;
         this.description = description;
+        this.observations = (List<Observations>) observations;
     }
 
     // No-args constructor

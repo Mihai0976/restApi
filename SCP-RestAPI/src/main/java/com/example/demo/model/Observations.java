@@ -20,5 +20,11 @@ public class Observations {
     @Getter
     @Setter
     private Date date;
+    @Getter
+    @Setter
+    private String objectClass;
 
+    public Object getId() {
+        return observationId;
+    }
 }
