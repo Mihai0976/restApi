@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 import com.example.demo.model.SCPentity;
 import com.example.demo.service.SCPservice;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +56,8 @@ public class SCPController {
     }
 
     // Endpoint to add a new anomaly
+    @Operation(summary = "Add Anomaly", description = "Endpoint to add a new anomaly")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/anomalies")
     public ResponseEntity<SCPentity> addAnomaliee(@RequestBody SCPentity anomaly) {
         SCPentity savedAnomaly = anomalyService.addAnomaly(anomaly);
@@ -61,6 +65,8 @@ public class SCPController {
     }
 
     // Endpoint to update anomaly's description by adding new observations
+    @Operation(summary = "Update anomaly", description = "Endpoint to update a specific anomaly")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/anomalies/{anomalyId}/observations")
     public ResponseEntity<SCPentity> updateAnomalieDescription(@PathVariable String anomalyId, @RequestBody String observations) {
         SCPentity updatedScpentity = anomalyService.addDescription(anomalyId, observations);
@@ -68,6 +74,8 @@ public class SCPController {
     }
 
     // Endpoint to delete a specific anomaly by ID
+    @Operation(summary = "Delete Anomaly", description = "Endpoint to delete a specific anomaly")
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping("/anomalies/{id}")
     public ResponseEntity<Void> deleteAnomalieById(@PathVariable String id) {
         boolean deleted = anomalyService.deleteAnomalyById(id);
